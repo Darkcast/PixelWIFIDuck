@@ -1,6 +1,6 @@
 """
    This script converts web files into C arrays and generates a header file
-   for use in ESP8266-based devices, particularly for hosting a web server.
+   for use in ESP32-based devices, particularly for hosting a web server.
 
    This software is licensed under the MIT License. See the license file for details.
    Source: https://github.com/spacehuhntech/WiFiDuck
@@ -162,9 +162,11 @@ def main():
     """
     Main function to execute the script.
     """
-    web_files = os.listdir("web/")
+    #web_files = os.listdir("web/")
+    web_files = [f for f in os.listdir("web/") if not f.startswith(".")]
 
-    outputfile = open("esp_duck/webfiles.h", "w+")
+
+    outputfile = open("src/webfiles.h", "w+")
     outputfile.write("#pragma once\n\n")
 
     outputfile.write(f"#define WEBSERVER_CALLBACK ")

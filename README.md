@@ -1,8 +1,8 @@
 # Pixel WiFi Duck
 
-<p align="center">
-<img alt="WiFi Duck Logo" src="img/thumbnail.jpg" width="640">
-</p>
+<!-- <p align="center">
+<img alt="Pixel WiFi Duck Logo" src="" width="640">
+</p> -->
 
 This project upgrades from Super WiFi Duck and utilizes the native USB function of ESP32 S2/3 chip. As a result, you can run WiFi Duck with a default module below $5 USD and no special hardware work is required.
 
@@ -11,7 +11,7 @@ ESP32 S2/3 can emulate multiple USB devices at the same time. So I want to add U
 **Please read the install and flash parts below.**\
 They are different from the original project.
 
-Want to learn more about BadUSBs? Check out WIFIDuck's online course: [learnbadusb.com](https://learnbadusb.com) 
+Want to learn more about BadUSBs? Check out WIFIDuck's online course: [learnbadusb.com](https://learnbadusb.com)
 
 ---
 
@@ -35,8 +35,9 @@ Want to learn more about BadUSBs? Check out WIFIDuck's online course: [learnbadu
     - [SPIFFS File Management](#spiffs-file-management)
   - [How to Debug](#how-to-debug)
   - [Development](#development)
-    - [Edit Web Files](#edit-web-files)
+    - [Edit/Adding Web Files](#editadding-web-files)
     - [Translate Keyboard Layout](#translate-keyboard-layout)
+  - [TODOS](#todos)
   - [License](#license)
   - [Credits](#credits)
   - [Support original wifiduck](#support-original-wifiduck)
@@ -61,11 +62,11 @@ A BadUSB pretends to be a keyboard to the computer to send keystrokes. But unlik
 
 By using a simple scripting language, it's easy to make BadUSBs type whatever you want.
 
-With the Pixel WiFi Duck, you can simply connect via WiFi to manage all scripts from within a web interface. 
+With the Pixel WiFi Duck, you can simply connect via WiFi to manage all scripts from within a web interface.
 
 This means that, unlike other BadUSBs, you don't need to install an app, log in, compile or copy scripts to an SD card.
 
-## Required Software 
+## Required Software
 PlatformIO \
 https://docs.platformio.org/en/latest/core/installation/index.html
 
@@ -86,19 +87,16 @@ In order to erase the chip hold the button on the usb and plugin to your Mac/PC,
 3. Open a browser and visit `192.168.4.1`
 4. Write, save and run your first Ducky Script
 
-
-
-
 If you have further questions, check out the [issue section](https://github.com/spacehuhn/WiFiDuck/issues).
 
 ## Flash ESP32 S2/S3
 
 1. modify platformio.ini if needed
 2. ***Flash ESP32-S2*** \
-   `pio run -e esp32-s2-kaluga-1 -t upload`
+ `pio run -e esp32-s2-kaluga-1 -t upload`
 
-   ***Flash ESP32-S3*** \
-   `pio run -e esp32-s3-devkitc-1 -t upload`
+ ***Flash ESP32-S3*** \
+ `pio run -e esp32-s3-devkitc-1 -t upload`
 
 
 ## Scripting
@@ -174,17 +172,21 @@ To debug, please use `ESP_LOGE` to display information via the COM port
 
 ## Development
 
-### Edit Web Files
+### Edit/Adding Web Files
 
 If you would like to modify the web interface, you can!
 The `web/` folder contains all `.html`, `.css`, `.js` files.
 You can edit and test them locally as long as you're connected to the WiFi Duck
 network thanks to the websocket connection handled by JavaScript in the background.
 
+To get the new files onto the ESP-32, run `python3 webconverter.py` in the repository folder.
+It gzips all files inside web/, converts them into a hex array and saves it in src/webfiles.h.
+
+***Now you just need to flash the ESP-32 again.***
 
 ### Translate Keyboard Layout
 Currently supported keyboard layouts:
-| Country:Layout          | Country:Layout           | Country:Layout           |
+| Country:Layout| Country:Layout | Country:Layout |
 |------------------|------------------|------------------|
 | [:de: DE](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_de.h) | [:gb: GB](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_gb.h) | [:us: US](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_us.h) |
 | [:es: ES](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_es.h) | [:denmark: DK](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_dk.h) | [:ru: RU](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_ru.h) |
@@ -196,64 +198,64 @@ Currently supported keyboard layouts:
 \
 All standard keys are defined in [usb_hid_keys.h](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/usb_hid_keys.h).
 To translate a keyboard layout, you have to match each character on
-your keyboard to the one(s) of a US keyboard.  
+your keyboard to the one(s) of a US keyboard.
 
-This stuff is hard to explain in writing and requires a lot of manual work and testing.  
+This stuff is hard to explain in writing and requires a lot of manual work and testing.
 
-1. Copy one of the existing layouts files, like [locale_us.h](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_us.h).  
-Preferably one that is close to your keyboard layout, it will save you time!  
+1. Copy one of the existing layouts files, like [locale_us.h](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_us.h).
+Preferably one that is close to your keyboard layout, it will save you time!
 2. Add `#include "locale_xx.h"` to the end of the locales.h file.
 3. Rename the file and its variables to your language code.
-For example:  
-`locale_xx.h` -> `locale_de.h`,  
-`ascii_xx` -> `ascii_de`,  
-`locale_xx` -> `locale_de`,  
-`utf8_xx` -> `utf8_de`.  
-`combinations_xx` -> `combinations_de`,  
-4. Modify the ASCII array.  
+For example:
+`locale_xx.h` -> `locale_de.h`,
+`ascii_xx` -> `ascii_de`,
+`locale_xx` -> `locale_de`,
+`utf8_xx` -> `utf8_de`.
+`combinations_xx` -> `combinations_de`,
+4. Modify the ASCII array.
 The ASCII array has a fixed size. Each row describes a key.
 First a modifier key like `KEY_MOD_LSHIFT`, then a character key.
 Some ASCII characters can't be typed or don't require a modifier,
 that's where you must place `KEY_NONE`.
-Check [usb_hid_keys.h](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/usb_hid_keys.h) for the available keys.  
-If multiple modifiers are required, you must use a bitwise OR to connect them: `KEY_MOD_RALT | KEY_MOD_LSHIFT`.  
-For example, in [locale_de.h](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_de.h#L136) `Z` is saved as `KEY_MOD_LSHIFT, KEY_Y`.  
+Check [usb_hid_keys.h](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/usb_hid_keys.h) for the available keys.
+If multiple modifiers are required, you must use a bitwise OR to connect them: `KEY_MOD_RALT | KEY_MOD_LSHIFT`.
+For example, in [locale_de.h](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_de.h#L136) `Z` is saved as `KEY_MOD_LSHIFT, KEY_Y`.
 This is because German keyboards use QWERTZ instead of the QWERTY layout
-and since the letter is uppercase, shift must be pressed as well.   
+and since the letter is uppercase, shift must be pressed as well. 
 Thankfully you don't have to trial and error everything, the Hak5 Community
-translated a lot of layouts already [here](https://github.com/hak5darren/USB-Rubber-Ducky/tree/master/Encoder/resources). It's just written in a different syntax. For example, `ASCII_20` (20 in hexadecimal) is the 32th character in our ascii array.  
-5. [deprecated] ~~Modify or create the extended ASCII array.  
+translated a lot of layouts already [here](https://github.com/hak5darren/USB-Rubber-Ducky/tree/master/Encoder/resources). It's just written in a different syntax. For example, `ASCII_20` (20 in hexadecimal) is the 32th character in our ascii array.
+5. [deprecated] ~~Modify or create the extended ASCII array.
 The extended ASCII array doesn't have a fixed size and is only as long as you make it.
 First the character code. For example, [ä](https://theasciicode.com.ar/extended-ascii-code/letter-a-umlaut-diaeresis-a-umlaut-lowercase-ascii-code-132.html) has the index 132, or 84 in hex.
 It doesn't use a modifier and sits where the apostrophe key is on a US keyboard:
-`0x84, KEY_NONE,       KEY_APOSTROPHE, // ä`.~~  
-6. Modify or create the UTF-8 array.  
-The UTF-8 array is variable in length, too.  
-The first 4 bytes are the character code.  
+`0x84, KEY_NONE, KEY_APOSTROPHE, // ä`.~~
+6. Modify or create the UTF-8 array.
+The UTF-8 array is variable in length, too.
+The first 4 bytes are the character code.
 For example, [Ä](https://www.fileformat.info/info/unicode/char/00c4/index.htm) has the hex code c384 or 0xc3 0x84. The other 2 bytes are not used so we set them to 0.
-Because the letter is uppercase, we need to press the shift key and like before, the letter is typed by pressing the same key as the apostrophe key of a US keyboard: `0xc3, 0x84, 0x00, 0x00, KEY_MOD_LSHIFT, KEY_APOSTROPHE, // Ä`.  
-7. Edit the hid_locale_t structure.  
-If you renamed all variables accordingly, there's nothing left to do.  
+Because the letter is uppercase, we need to press the shift key and like before, the letter is typed by pressing the same key as the apostrophe key of a US keyboard: `0xc3, 0x84, 0x00, 0x00, KEY_MOD_LSHIFT, KEY_APOSTROPHE, // Ä`.
+7. Edit the hid_locale_t structure.
+If you renamed all variables accordingly, there's nothing left to do.
 8. Go to [duckparser.cpp](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/duckparser.cpp#L163) at `// LOCALE (-> change keyboard layout)` you can see a bunch of else if statements.
-You need to copy one for your layout.  
+You need to copy one for your layout.
 
-Before adding GB layout:  
+Before adding GB layout:
 ```c
 if (compare(w->str, w->len, "US", CASE_SENSETIVE)) {
-    keyboard::setLocale(&locale_us);
+keyboard::setLocale(&locale_us);
 } else if (compare(w->str, w->len, "DE", CASE_SENSETIVE)) {
-    keyboard::setLocale(&locale_de);
+keyboard::setLocale(&locale_de);
 }
 ```
 
 After adding GB layout:
 ```c
 if (compare(w->str, w->len, "US", CASE_SENSETIVE)) {
-    keyboard::setLocale(&locale_us);
+keyboard::setLocale(&locale_us);
 } else if (compare(w->str, w->len, "DE", CASE_SENSETIVE)) {
-    keyboard::setLocale(&locale_de);
+keyboard::setLocale(&locale_de);
 } else if (compare(w->str, w->len, "GB", CASE_SENSETIVE)) {
-   keyboard::setLocale(&locale_gb);
+ keyboard::setLocale(&locale_gb);
 }
 ```
 9. Test your layout with a Ducky Script that contains all characters of your keyboard. For example:
@@ -265,29 +267,34 @@ ENTER
 10. Add a link to your layout to [README](README.md), to [web/index.html](web/index.html) and please feel free to improve this tutorial to help future translators!
 11. [Create a Pull Request](https://help.github.com/en/articles/creating-a-pull-request)
 
+## TODOS
+- [ ] add support for sd-cards
+- [ ] find a way to preload scripts in the [testscript](testscript) folder
+- [ ] fix the log module
+
 ## License
 
 This software is licensed under the MIT License.
-See the [license file](LICENSE) for details.  
+See the [license file](LICENSE) for details.
 
 ## Credits
 
 Software libraries used in this project:
-  - [Arduino](https://www.arduino.cc)
-  - [Neopixel Library](https://github.com/adafruit/Adafruit_NeoPixel)
-  - [Dotstar Library](https://github.com/adafruit/Adafruit_DotStar)
-  - [AVR, ESP8266 & SAMD Arduino Core](https://github.com/spacehuhn/hardware/tree/master/wifiduck)
-  - [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP)
-  - [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
-  - [SimpleCLI](https://github.com/spacehuhn/SimpleCLI)
+- [Arduino](https://www.arduino.cc)
+- [Neopixel Library](https://github.com/adafruit/Adafruit_NeoPixel)
+- [Dotstar Library](https://github.com/adafruit/Adafruit_DotStar)
+- [AVR, ESP8266 & SAMD Arduino Core](https://github.com/spacehuhn/hardware/tree/master/wifiduck)
+- [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP)
+- [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
+- [SimpleCLI](https://github.com/spacehuhn/SimpleCLI)
 
 ## Support original wifiduck
 
-Hey, do you like this kind of project?  
-It took a huge amount of effort to create!  
+Hey, do you like this kind of project?
+It took a huge amount of effort to create!
 
-To make sure we can keep working on free and open-source projects like this,  
-**please consider becoming a [:heart: Sponsor](https://github.com/sponsors/spacehuhntech) or support us via [:coffee: Ko-fi](https://ko-fi.com/spacehuhn).**  
+To make sure we can keep working on free and open-source projects like this,
+**please consider becoming a [:heart: Sponsor](https://github.com/sponsors/spacehuhntech) or support us via [:coffee: Ko-fi](https://ko-fi.com/spacehuhn).**
 
 Visit [spacehuhn.com](https://spacehuhn.com) to learn more about us. :chicken:
 
