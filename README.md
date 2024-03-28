@@ -1,38 +1,35 @@
-# Super WiFi Duck
+# Pixel WiFi Duck
 
 <p align="center">
 <img alt="WiFi Duck Logo" src="img/thumbnail.jpg" width="640">
 </p>
 
-This project upgrades from WiFi Duck and utilizes the native USB function of ESP32 S2/3 chip. As a result, you can run WiFi Duck with a default module below 10$, and no special hardware work is required.
+This project upgrades from Super WiFi Duck and utilizes the native USB function of ESP32 S2/3 chip. As a result, you can run WiFi Duck with a default module below $5 USD and no special hardware work is required.
 
-ESP32 S2/3 can emulate multiple USB devices at the same time. So I want to add USB mouse and USB disk function in the future. But it depends on how much time/money I have.
+ESP32 S2/3 can emulate multiple USB devices at the same time. So I want to add USB mouse and USB disk function in the future.
 
-Please help me to build more projects! [paypal](https://www.paypal.com/donate/?business=UZAK3WFV233ML&no_recurring=0&item_name=Help+me+build+more+project%21&currency_code=USD)
-
-Please read the install and flash parts below. They are different from the original project. 
+**Please read the install and flash parts below.**\
+They are different from the original project.
 
 Want to learn more about BadUSBs? Check out WIFIDuck's online course: [learnbadusb.com](https://learnbadusb.com) 
 
-Video Demo:
-<p align="center">
-<img alt="WiFi Duck Demo" src="img/demo.gif" width="320">
-</p>
-
 ---
 
-- [Super WiFi Duck](#super-wifi-duck)
+## Table of Content
+
+- [Pixel WiFi Duck](#pixel-wifi-duck)
+  - [Table of Content](#table-of-content)
+  - [Disclaimer](#disclaimer)
   - [About](#about)
+  - [Required Software](#required-software)
+  - [Before flashing](#before-flashing)
   - [Usage](#usage)
   - [Flash ESP32 S2/S3](#flash-esp32-s2s3)
   - [Scripting](#scripting)
     - [Basics](#basics)
     - [Functions](#functions)
-    - [Standard Keys](#standard-keys)
-    - [Modifier Keys](#modifier-keys)
-    - [Other Keys](#other-keys)
-    - [Numpad Keys](#numpad-keys)
-    - [Examples](#examples)
+    - [Keys](#keys)
+    - [Script Example:](#script-example)
   - [CLI Commands](#cli-commands)
     - [General](#general)
     - [SPIFFS File Management](#spiffs-file-management)
@@ -40,138 +37,91 @@ Video Demo:
   - [Development](#development)
     - [Edit Web Files](#edit-web-files)
     - [Translate Keyboard Layout](#translate-keyboard-layout)
-  - [Disclaimer](#disclaimer)
   - [License](#license)
   - [Credits](#credits)
+  - [Support original wifiduck](#support-original-wifiduck)
+
+## Disclaimer
+
+This tool is intended to be used for testing, training, and educational purposes only.
+
+**Never use it to do harm or create damage!**
+
+The continuation of this project counts on you!
 
 ## About
 
+Pixel WiFi Duck: This open-source project aims to provide a user-friendly tool to learn about keystroke injection attacks and 'BadUSBs'.
 
-WiFi Duck: This open-source project aims to provide a user-friendly tool to learn about keystroke injection attacks and 'BadUSBs'.  
+By emulating a USB keyboard, tools like this can gain full access to any computer with a USB port in a matter of seconds!
 
-By emulating a USB keyboard, tools like this can gain full access to any computer with a USB port in a matter of seconds!  
-This is made possible by the fact that keyboards are trusted by computers. You can have full control over a computer with just a keyboard.  
-A BadUSB pretends to be a keyboard to the computer to send keystrokes. 
-But unlike a human, it can type hundreds of characters per second. 
-By using a simple scripting language, it's easy to make BadUSBs type whatever you want. 
+This is made possible by the fact that keyboards are trusted by computers. You can have full control over a computer with just a keyboard.
 
-With the WiFi Duck, you can simply connect via WiFi to manage all scripts
-from within a web interface. This means that, unlike other BadUSBs, you don't need to install an app, log in, compile or copy scripts to an SD card.  
+A BadUSB pretends to be a keyboard to the computer to send keystrokes. But unlike a human, it can type hundreds of characters per second.
+
+By using a simple scripting language, it's easy to make BadUSBs type whatever you want.
+
+With the Pixel WiFi Duck, you can simply connect via WiFi to manage all scripts from within a web interface. 
+
+This means that, unlike other BadUSBs, you don't need to install an app, log in, compile or copy scripts to an SD card.
+
+## Required Software 
+PlatformIO \
+https://docs.platformio.org/en/latest/core/installation/index.html
+
+## Before flashing
+**WIFI:** \
+Its recommended to modify [config.h](src/config.h) to change Wifi password, name ect before flashing.
+
+
+**Erasing target chip:** \
+In order to erase the chip hold the button on the usb and plugin to your Mac/PC, let go of the button. Open up terminal and run `pio run --target erase`
+
+**ignore error the unable to restart the chip.**
 
 ## Usage
 
-<p align="center">
-  <a href="https://www.youtube.com/watch?v=sSJuGXd8QRk">
-    <img alt="WiFi Duck Video Thumbnail" src="https://raw.githubusercontent.com/spacehuhn/WiFiDuck/master/img/showcase.gif" width="400">
-    <br>
-    <b>Watch the full video</b>
-  </a>
-</p>
-
 1. Plug in your WiFi Duck
-2. Connect to the WiFi network `wifiduck` with the password `wifiduck`
+2. Connect to the WiFi network `PixelWifiDuck` with the password `WhatTheDuck?`
 3. Open a browser and visit `192.168.4.1`
 4. Write, save and run your first Ducky Script
-5. [Recommended] Open `Settings` (top right corner) and update SSID and password
 
-**Help I forgot the password:**
-[Flash the ESP32](#flash-esp32), but make sure that you select `Erase Flash: Sketch + WiFi Settings`
-under Tools in the Arduino IDE.  
 
-If you have further questions, check out the [issue section](https://github.com/spacehuhn/WiFiDuck/issues).  
+
+
+If you have further questions, check out the [issue section](https://github.com/spacehuhn/WiFiDuck/issues).
 
 ## Flash ESP32 S2/S3
 
-1. Install PlatformIO
-2. modify platformio.ini if needed
-3. `pio run -e esp32-s3-devkitc-1 -t upload` for esp32s3 ; 
-   `pio run -e esp32-s2-kaluga-1 -t upload` for esp32s2
+1. modify platformio.ini if needed
+2. ***Flash ESP32-S2*** \
+   `pio run -e esp32-s2-kaluga-1 -t upload`
 
-4. see Usage part   
+   ***Flash ESP32-S3*** \
+   `pio run -e esp32-s3-devkitc-1 -t upload`
+
 
 ## Scripting
 
+Hak5 Scripting references:
+https://docs.hak5.org/hak5-usb-rubber-ducky/duckyscript-tm-quick-reference
+
+Wifi Duck reference:
 ### Basics
 
-Keys are separated by a single space.  
-Everything written in a single line gets pressed and released at the same time.  
-To write text, use the STRING function.  
-It's compatible to Ducky Script, which was developed by the wonderful people at [Hak5](https://www.hak5.org/).  
-
-| Example | Explanation |
-| ------- | ----------- |
-| WINDOWS <br> r | Type the Windows key and then the r key |
-| WINDOWS r | Press the Windows key and the r key simultaneously |
-| STRING WINDOWS r | Write WINDOWS r |
+https://wifiduck.com/docs/scripting/basics
 
 ### Functions
 
-| Command | Example | Description |
-| ------- | ------- | ----------- |
-| `REM` | `REM Hello World!` |Comment |
-| `DEFAULTDELAY` or `DEFAULT_DELAY` | `DEFAULTDELAY 200` | Time in ms between every command |
-| `DELAY` | `DELAY 1000` | Delay in ms |
-| `STRING` | `STRING Hello World!` | Types the following string |
-| `REPEAT` or `REPLAY` | `REPEAT 3` | Repeats the last command n times |
-| `LOCALE` | `LOCALE DE` | Sets the keyboard layout. [List](#translate-keyboard-layout) |
-| `KEYCODE` | `KEYCODE 0x02 0x04` | Types a specific key code (modifier, key1[, ..., key6]) in decimal or hexadecimal |
-| `LED` | `LED 40 20 10` |Changes the color of the LED in decimal RGB values (0-255) |
+https://wifiduck.com/docs/scripting/functions
 
-### Standard Keys
 
-| Key |
-| --- |
-| `a` - `z` |
-| `A` - `Z` |
-| `0` - `9` |
-| `F1` - `F12` |
+### Keys
+https://wifiduck.com/docs/scripting/keys
 
-### Modifier Keys
+---
 
-| Key |
-| --- |
-| `CTRL` or `CONTROL` |
-| `SHIFT` |
-| `ALT` |
-| `WINDOWS` or `GUI` |
-
-### Other Keys
-
-| Key |
-| --- |
-| `ENTER` |
-| `MENU` or `APP`|
-| `DELETE` |
-| `HOME` |
-| `INSERT` |
-| `PAGEUP` |
-| `PAGEDOWN` |
-| `UP` or `UPARROW` |
-| `DOWN` or `DOWNARROW` |
-| `LEFT` or `LEFTARROW` |
-| `RIGHT` or `RIGHTARROW` |
-| `TAB` |
-| `END` |
-| `ESC` or `ESCAPE` |
-| `SPACE` |
-| `PAUSE or BREAK` |
-| `CAPSLOCK` |
-| `NUMLOCK` |
-| `PRINTSCREEN` |
-| `SCROLLLOCK` |
-
-### Numpad Keys
-
-| Key |
-| --- |
-| `NUM_0` - `NUM_9` |
-| `NUM_ASTERIX` |
-| `NUM_ENTER` |
-| `NUM_MINUS` |
-| `NUM_DOT` |
-| `NUM_PLUS` |
-
-### Examples
+### Script Example:
 
 ```
 REM Hello World for Windows PCs
@@ -184,7 +134,7 @@ STRING Hello World!
 
 ## CLI Commands
 
-The command line interface or CLI is accessible using a serial connection to the ESP8266 (115200 baud, Newline ending) or via the web interface at `192.168.4.1/terminal.html`.  
+The command line interface or CLI is accessible using a serial connection to the ESP32-S2/3 (115200 baud, Newline ending) or via the web interface at `192.168.4.1/terminal.html`.
 
 ### General
 
@@ -216,52 +166,38 @@ The command line interface or CLI is accessible using a serial connection to the
 | close | Closes file stream | `close` |
 | read | Read and return the result from file stream | `read` |
 
-If a stream is open, everything you type (except messages containing exactly `close` or `read`) will be written to the file until you type `close`!  
+If a stream is open, everything you type (except messages containing exactly `close` or `read`) will be written to the file until you type `close`!
 
 ## How to Debug
-The original debug module doesn't work right now.
+The original debug module **doesn't work** right now.
 To debug, please use `ESP_LOGE` to display information via the COM port
 
 ## Development
 
 ### Edit Web Files
 
-If you would like to modify the web interface, you can!  
-The `web/` folder contains all `.html`, `.css`, `.js` files.  
+If you would like to modify the web interface, you can!
+The `web/` folder contains all `.html`, `.css`, `.js` files.
 You can edit and test them locally as long as you're connected to the WiFi Duck
-network thanks to the websocket connection handled by JavaScript in the background.  
+network thanks to the websocket connection handled by JavaScript in the background.
 
-To get the new files onto the ESP8266, run `python3 webconverter.py` in the
-repository folder.  
-It gzips all files inside `web/`, converts them into a hex array
-and saves it in `esp_duck/webfiles.h`.  
-Now you just need to [flash](#flash-software) the ESP8266 again.  
 
 ### Translate Keyboard Layout
+Currently supported keyboard layouts:
+| Country:Layout          | Country:Layout           | Country:Layout           |
+|------------------|------------------|------------------|
+| [:de: DE](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_de.h) | [:gb: GB](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_gb.h) | [:us: US](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_us.h) |
+| [:es: ES](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_es.h) | [:denmark: DK](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_dk.h) | [:ru: RU](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_ru.h) |
+| [:fr: FR](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_fr.h) | [:belgium: BE](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_be.h) | [:portugal: PT](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_pt.h) |
+| [:it: IT](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_it.h) | [:slovakia: SK](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_sk.h) | [:czech_republic: CZ](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_cz.h) |
+| [:slovenia: SI](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_si.h) | [:bulgaria: BG](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_bg.h) | [:canada: CA-FR](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_cafr.h) |
+| [:switzerland: CH-DE](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_chde.h) | [:switzerland: CH-FR](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_chfr.h) | [:hungary: HU](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_hu.h) |
 
-Currently supported keyboard layouts:  
-- [:de: DE](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_de.h)
-- [:gb: GB](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_gb.h)
-- [:us: US](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_us.h)
-- [:es: ES](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_es.h)
-- [:denmark: DK](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_dk.h)
-- [:ru: RU](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_ru.h)
-- [:fr: FR](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_fr.h)
-- [:belgium: BE](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_be.h)
-- [:portugal: PT](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_pt.h)
-- [:it: IT](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_it.h)
-- [:slovakia: SK](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_sk.h)
-- [:czech_republic: CZ](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_cz.h)
-- [:slovenia: SI](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_si.h)
-- [:bulgaria: BG](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_bg.h)
-- [:canada: CA-FR](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_cafr.h)
-- [:switzerland: CH-DE](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_chde.h)
-- [:switzerland: CH-FR](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_chfr.h)
-- [:hungary: HU](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_hu.h)
-
-All standard keys are defined in [usb_hid_keys.h](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/usb_hid_keys.h).  
+\
+All standard keys are defined in [usb_hid_keys.h](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/usb_hid_keys.h).
 To translate a keyboard layout, you have to match each character on
 your keyboard to the one(s) of a US keyboard.  
+
 This stuff is hard to explain in writing and requires a lot of manual work and testing.  
 
 1. Copy one of the existing layouts files, like [locale_us.h](https://github.com/spacehuhn/WiFiDuck/blob/master/atmega_duck/locale_us.h).  
@@ -320,7 +256,7 @@ if (compare(w->str, w->len, "US", CASE_SENSETIVE)) {
    keyboard::setLocale(&locale_gb);
 }
 ```
-9. Test your layout with a Ducky Script that contains all characters of your keyboard. For example:  
+9. Test your layout with a Ducky Script that contains all characters of your keyboard. For example:
 ```
 LOCALE DE
 STRING !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_abcdefghijklmnopqrstuvwxyz{|}~²³äöüÄÖÜß€°§`
@@ -328,13 +264,6 @@ ENTER
 ```
 10. Add a link to your layout to [README](README.md), to [web/index.html](web/index.html) and please feel free to improve this tutorial to help future translators!
 11. [Create a Pull Request](https://help.github.com/en/articles/creating-a-pull-request)
-
-## Disclaimer
-
-This tool is intended to be used for testing, training, and educational purposes only.  
-Never use it to do harm or create damage!  
-
-The continuation of this project counts on you!  
 
 ## License
 

@@ -76,11 +76,18 @@ nav {
 	background: #2f3136;
 	font-weight: bold;
 }
-  
+
 nav a {
 	color: inherit;
 }
 
+.wifi-link .icon {
+    fill: blue; /* Change the fill color to match the theme */
+}
+
+.settings-link .icon {
+    fill: green; /* Change the fill color to match the theme */
+}
 .menu {
 	width: 60vw;
 	list-style-type: none;
@@ -90,6 +97,10 @@ nav a {
 	display: flex;
 	flex-direction: row;
 	display:block;
+}
+svg {
+    visibility: visible;
+    opacity: 1;
 }
 
 .menu li {
@@ -109,6 +120,19 @@ nav a {
 .menu a:hover {
 	background: #42444a;
 }
+/* Set initial color of SVG images */
+.menu a img {
+    /* Filter properties to achieve desired color */
+    filter: invert(75%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(95%);
+}
+
+/* Change color of SVG images on hover */
+.menu a:hover img {
+    /* Filter properties for hover effect */
+    filter: invert(24%) sepia(95%) saturate(2498%) hue-rotate(104deg) brightness(99%) contrast(93%);
+}
+
+
 
 code {
 	background: #ccc;
