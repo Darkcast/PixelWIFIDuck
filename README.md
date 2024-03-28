@@ -67,8 +67,12 @@ With the Pixel WiFi Duck, you can simply connect via WiFi to manage all scripts 
 This means that, unlike other BadUSBs, you don't need to install an app, log in, compile or copy scripts to an SD card.
 
 ## Required Software
-PlatformIO \
-https://docs.platformio.org/en/latest/core/installation/index.html
+[PlatformIO](https://docs.platformio.org/en/latest/core/installation/index.html)
+
+
+[esptool](https://pypi.org/project/esptool/) \
+`pip install esptool`
+
 
 ## Before flashing
 **WIFI:** \
@@ -76,10 +80,15 @@ Its recommended to modify [config.h](src/config.h) to change Wifi password, name
 
 
 **Erasing target chip:** \
-In order to erase the chip hold the button on the usb and plugin to your Mac/PC, let go of the button. Open up terminal and run `pio run --target erase`
+In order to erase the chip hold the button on the usb and plugin to your Mac/PC, let go of the button. Open up terminal and run:
 
-**ignore error the unable to restart the chip.**
+`esptool.py --chip CHIP_TYPE_HERE  erase_flash`
 
+Example:
+`esptool.py --chip esp32-s3  erase_flash`
+
+
+some chips like the s2 will give an error since they cant be restarted automatically via the esptool, you can safely ignore it
 ## Usage
 
 1. Plug in your WiFi Duck
@@ -91,13 +100,16 @@ If you have further questions, check out the [issue section](https://github.com/
 
 ## Flash ESP32 S2/S3
 
-1. modify platformio.ini if needed
-2. ***Flash ESP32-S2*** \
+Modify platformio.ini if needed 
+
+***Flash ESP32-S2*** \
  `pio run -e esp32-s2-kaluga-1 -t upload`
 
  ***Flash ESP32-S3*** \
  `pio run -e esp32-s3-devkitc-1 -t upload`
 
+ ***Flash ESP32-S3-usbotg*** (the one with an sdcard inside of the usb port)
+ `pio run -e esp32s3usbotg -t upload`
 
 ## Scripting
 
