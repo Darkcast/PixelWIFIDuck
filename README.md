@@ -82,11 +82,8 @@ Its recommended to modify [config.h](src/config.h) to change Wifi password, name
 **Erasing target chip:** \
 In order to erase the chip hold the button on the usb and plugin to your Mac/PC, let go of the button. Open up terminal and run:
 
-`esptool.py --chip CHIP_TYPE_HERE  erase_flash`
 
-Example:
-`esptool.py --chip esp32-s3  erase_flash`
-
+`esptool.py --chip auto  erase_flash`
 
 some chips like the s2 will give an error since they cant be restarted automatically via the esptool, you can safely ignore it
 ## Usage
